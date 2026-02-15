@@ -1,4 +1,4 @@
-name: Keep Render Service Alive
+name: Keep Render Services Alive
 
 on:
   schedule:
@@ -10,11 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Ping Render API with retry
+
+      - name: Ping FastAPI ML Service
         run: |
           for i in 1 2 3
           do
             curl -s https://prediction-model-wi0s.onrender.com/predictions && break
-            echo "Retry $i..."
+            echo "Retry FastAPI $i..."
+            sleep 10
+          done
+
+
+      - name: Ping Node.js Backend
+        run: |
+          for i in 1 2 3
+          do
+            curl -s https://node-backend-xuum.onrender.com/api/predictions/insights && break
+            echo "Retry Node Backend $i..."
             sleep 10
           done
